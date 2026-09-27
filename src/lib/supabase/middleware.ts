@@ -30,11 +30,12 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
+  // Avoid running auth check or redirect loops on API or static assets
+  const isAuthPage = request.nextUrl.pathname.startsWith("/login");
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const isAuthPage = request.nextUrl.pathname.startsWith("/login");
 
   if (!user && !isAuthPage) {
     // no user, redirect to login page
