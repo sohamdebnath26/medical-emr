@@ -7,6 +7,7 @@ interface AppShellProps {
   children: React.ReactNode;
   userName?: string;
   userRole?: string;
+  isAnonymous?: boolean;
   onOpenWalkIn?: () => void;
 }
 
@@ -14,6 +15,7 @@ export function AppShell({
   children,
   userName,
   userRole,
+  isAnonymous = false,
   onOpenWalkIn,
 }: AppShellProps) {
   return (
@@ -26,6 +28,7 @@ export function AppShell({
         <Header
           userName={userName}
           userRole={userRole}
+          isAnonymous={isAnonymous}
           onOpenWalkIn={onOpenWalkIn}
         />
 

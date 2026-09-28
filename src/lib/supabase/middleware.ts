@@ -30,11 +30,12 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
+  const pathname = request.nextUrl.pathname;
+  const isAuthPage = pathname.startsWith("/login") || pathname.startsWith("/register");
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const isAuthPage = request.nextUrl.pathname.startsWith("/login");
 
   if (!user && !isAuthPage) {
     // no user, redirect to login page
@@ -44,7 +45,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (user && isAuthPage) {
-    // authenticated user trying to access login page, redirect to dashboard
+    // authenticated user trying to access login/register page, redirect to dashboard
     const url = request.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
