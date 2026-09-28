@@ -30,8 +30,8 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // Avoid running auth check or redirect loops on API or static assets
-  const isAuthPage = request.nextUrl.pathname.startsWith("/login");
+  const pathname = request.nextUrl.pathname;
+  const isAuthPage = pathname.startsWith("/login") || pathname.startsWith("/register");
 
   const {
     data: { user },
@@ -45,7 +45,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (user && isAuthPage) {
-    // authenticated user trying to access login page, redirect to dashboard
+    // authenticated user trying to access login/register page, redirect to dashboard
     const url = request.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
